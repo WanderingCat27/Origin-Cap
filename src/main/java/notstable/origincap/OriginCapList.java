@@ -101,9 +101,9 @@ public class OriginCapList {
             if (uuidList.isEmpty())
                 currLayerMap.remove(originKey);
         }
-    writeMapToFile();
+        writeMapToFile();
 
-}
+    }
 
     public static void removePlayerAllLayers(String playerUUID) {
         if (originCapMap == null)
