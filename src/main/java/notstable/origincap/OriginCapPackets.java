@@ -48,30 +48,15 @@ public class OriginCapPackets {
         ServerLoginNetworking.registerGlobalReceiver(OriginCapPackets.HANDSHAKE, OriginCapPackets::handshakeReply);
     }
 
-    private static void handshakeReply(MinecraftServer minecraftServer, ServerLoginNetworkHandler serverLoginNetworkHandler, boolean understood, PacketByteBuf packetByteBuf, ServerLoginNetworking.LoginSynchronizer loginSynchronizer, PacketSender packetSender) {
-        if (understood) {
-            String handshakeCheckString = packetByteBuf.readString();
-            boolean mismatch = !(handshakeCheckString.equals(OriginCap.HANDSHAKE_CHECK));
+    public static void registerClient() {
+        ClientLoginNetworking.registerGlobalReceiver(OriginCapPackets.HANDSHAKE, (client, handler, packetBuf, listenerAdder) -> {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString(OriginCap.HANDSHAKE_CHECK);
+            return CompletableFuture.completedFuture(buf);
+        });
 
-
-            if (mismatch)
-                serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
-
-        } else {
-            serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
-        }
-    }
-
-    public static void alertHandshakeEvent(String clientResponse, String clientInfo) {
-        System.out.println("checking handshake events");
-
-        for (int i = 0; i < handshakeEvents.size(); i++) {
-            if (handshakeEvents.get(i).getClientInfo().equals(clientInfo)) {
-                handshakeEvents.get(i).handshake(clientResponse);
-                handshakeEvents.remove(i);
-                return;
-            }
-        }
+        ClientPlayNetworking.registerGlobalReceiver(CLIENT_RECEIVE_CAP_CHECK_RESPONSE, OriginCapPackets::clientReceiveCheck);
+        ClientPlayNetworking.registerGlobalReceiver(CLIENT_RECEIVE_HANDSHAKE, OriginCapPackets::clientHandshake);
     }
 
     private static void registerHandshake() {
@@ -119,20 +104,38 @@ public class OriginCapPackets {
         });
     }
 
+
+    private static void handshakeReply(MinecraftServer minecraftServer, ServerLoginNetworkHandler serverLoginNetworkHandler, boolean understood, PacketByteBuf packetByteBuf, ServerLoginNetworking.LoginSynchronizer loginSynchronizer, PacketSender packetSender) {
+        if (understood) {
+            String handshakeCheckString = packetByteBuf.readString();
+            boolean mismatch = !(handshakeCheckString.equals(OriginCap.HANDSHAKE_CHECK));
+
+
+            if (mismatch)
+                serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
+
+        } else {
+            serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
+        }
+    }
+
+    public static void alertHandshakeEvent(String clientResponse, String clientInfo) {
+        System.out.println("checking handshake events");
+
+        for (int i = 0; i < handshakeEvents.size(); i++) {
+            if (handshakeEvents.get(i).getClientInfo().equals(clientInfo)) {
+                handshakeEvents.get(i).handshake(clientResponse);
+                handshakeEvents.remove(i);
+                return;
+            }
+        }
+    }
+
+
     private static boolean checkClient(String checkMessage) {
         return checkMessage == OriginCap.HANDSHAKE_CHECK;
     }
 
-    public static void registerClient() {
-        ClientLoginNetworking.registerGlobalReceiver(OriginCapPackets.HANDSHAKE, (client, handler, packetBuf, listenerAdder) -> {
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeString(OriginCap.HANDSHAKE_CHECK);
-            return CompletableFuture.completedFuture(buf);
-        });
-
-        ClientPlayNetworking.registerGlobalReceiver(CLIENT_RECEIVE_CAP_CHECK_RESPONSE, OriginCapPackets::clientReceiveCheck);
-        ClientPlayNetworking.registerGlobalReceiver(CLIENT_RECEIVE_HANDSHAKE, OriginCapPackets::clientHandshake);
-    }
 
     private static void clientHandshake(MinecraftClient minecraftClient, ClientPlayNetworkHandler clientPlayNetworkHandler, PacketByteBuf packetByteBuf, PacketSender packetSender) {
         // client info
