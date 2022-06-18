@@ -25,10 +25,7 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "1.18.2",
-    "origins": ">=1.4.0"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "minecraft": "1.19.X",
+    "origins": ">=1.6.1"
   }
 }

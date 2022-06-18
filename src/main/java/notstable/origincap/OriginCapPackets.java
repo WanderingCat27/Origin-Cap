@@ -1,28 +1,21 @@
 package notstable.origincap;
 
-import io.github.apace100.apoli.Apoli;
 import io.netty.buffer.Unpooled;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerLoginNetworkHandler;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class OriginCapPackets {
     // Handshake
@@ -49,10 +42,10 @@ public class OriginCapPackets {
         ServerPlayNetworking.registerGlobalReceiver(REMOVE_PLAYER_FROM_CAP, OriginCapPackets::serverRemovePlayerFromCap);
         ServerPlayNetworking.registerGlobalReceiver(SERVER_RECEIVE_HANDSHAKE, OriginCapPackets::serverHandshake);
 
-            ServerLoginConnectionEvents.QUERY_START.register((handler, server, sender, synchronizer) -> {
-                sender.sendPacket(OriginCapPackets.HANDSHAKE, PacketByteBufs.empty());
-            });
-            ServerLoginNetworking.registerGlobalReceiver(OriginCapPackets.HANDSHAKE, OriginCapPackets::handshakeReply);
+        ServerLoginConnectionEvents.QUERY_START.register((handler, server, sender, synchronizer) -> {
+            sender.sendPacket(OriginCapPackets.HANDSHAKE, PacketByteBufs.empty());
+        });
+        ServerLoginNetworking.registerGlobalReceiver(OriginCapPackets.HANDSHAKE, OriginCapPackets::handshakeReply);
     }
 
     private static void handshakeReply(MinecraftServer minecraftServer, ServerLoginNetworkHandler serverLoginNetworkHandler, boolean understood, PacketByteBuf packetByteBuf, ServerLoginNetworking.LoginSynchronizer loginSynchronizer, PacketSender packetSender) {
@@ -61,11 +54,11 @@ public class OriginCapPackets {
             boolean mismatch = !(handshakeCheckString.equals(OriginCap.HANDSHAKE_CHECK));
 
 
-            if(mismatch)
-                serverLoginNetworkHandler.disconnect(new LiteralText("This server requires you have the mod origin cap  installed"));
+            if (mismatch)
+                serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
 
         } else {
-            serverLoginNetworkHandler.disconnect(new LiteralText("This server requires you have the mod origin cap  installed"));
+            serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
         }
     }
 
@@ -131,7 +124,7 @@ public class OriginCapPackets {
     }
 
     public static void registerClient() {
-        ClientLoginNetworking.registerGlobalReceiver(OriginCapPackets.HANDSHAKE, (ClientLoginNetworking.LoginQueryRequestHandler) (client, handler, packetBuf, listenerAdder) -> {
+        ClientLoginNetworking.registerGlobalReceiver(OriginCapPackets.HANDSHAKE, (client, handler, packetBuf, listenerAdder) -> {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeString(OriginCap.HANDSHAKE_CHECK);
             return CompletableFuture.completedFuture(buf);

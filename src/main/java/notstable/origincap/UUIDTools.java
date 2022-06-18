@@ -42,8 +42,8 @@ public class UUIDTools {
 
         http.disconnect();
 
-        ArrayList<Map<String,String>> responseMap =  new Gson().fromJson(s, ArrayList.class);
-        if(responseMap.isEmpty())
+        ArrayList<Map<String, String>> responseMap = new Gson().fromJson(s, ArrayList.class);
+        if (responseMap.isEmpty())
             return "";
         return responseMap.get(0).get("id");
     }
@@ -62,7 +62,7 @@ public class UUIDTools {
             }
         }
 
-        ArrayList<Map<String,String>> response =  new Gson().fromJson(result.toString(), ArrayList.class);
+        ArrayList<Map<String, String>> response = new Gson().fromJson(result.toString(), ArrayList.class);
         return response.get(response.size() - 1).get("name");
     }
 }

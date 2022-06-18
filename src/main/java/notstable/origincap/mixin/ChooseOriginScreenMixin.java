@@ -12,10 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import notstable.origincap.OriginCap.ButtonStatus;
 import notstable.origincap.OriginCapPackets;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,12 +21,12 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mixin(ChooseOriginScreen.class)
 public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
-    @Shadow public abstract void render(MatrixStack matrices, int mouseX, int mouseY, float delta);
+    @Shadow
+    public abstract void render(MatrixStack matrices, int mouseX, int mouseY, float delta);
 
     @Shadow
     private final ArrayList<OriginLayer> layerList;
@@ -45,10 +42,10 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
     @Shadow
     private Origin randomOrigin;
     private ButtonWidget chooseOriginButton;
-    private LiteralText chooseText;
-    private LiteralText fullText;
-    private LiteralText loadingText;
-    private LiteralText fetchingText;
+    private Text chooseText;
+    private Text fullText;
+    private Text loadingText;
+    private Text fetchingText;
     private int randomIndex = -1;
     private boolean randomNotLoaded = false;
 
@@ -67,7 +64,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
     @Overwrite
     protected void init() {
         // client world - The integrated server is only present when a local single player world is open.
-        if(MinecraftClient.getInstance().getServer() != null) {
+        if (MinecraftClient.getInstance().getServer() != null) {
             originalOriginInit(); // if client world ignore custom screen
             return;
         }
@@ -75,6 +72,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
 
         customInit();
     }
+
 
     private void customInit() {
         PacketByteBuf removeBuf = new PacketByteBuf(Unpooled.buffer());
@@ -86,12 +84,14 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
         new Thread(() -> {
             createRandom(1, 0);
         }).start();
+
+
         super.init();
 
-        chooseText = new LiteralText("Select");
-        fullText = new LiteralText("FULL");
-        loadingText = new LiteralText("LOADING");
-        fetchingText = new LiteralText("FETCHING ORIGIN");
+        chooseText = Text.literal("Select");
+        fullText = Text.literal("FULL");
+        loadingText = Text.literal("LOADING");
+        fetchingText = Text.literal("FETCHING ORIGIN");
 
         chooseOriginButton = new ButtonWidget(guiLeft + windowWidth / 2 - 50, guiTop + windowHeight + 5, 100, 20, loadingText, b -> {
             System.out.println(buttonStatus);
@@ -140,7 +140,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
 
         // left right buttons
         if (maxSelection > 1) {
-            addDrawableChild(new ButtonWidget(guiLeft - 40, this.height / 2 - 10, 20, 20, new LiteralText("<"), b -> {
+            addDrawableChild(new ButtonWidget(guiLeft - 40, this.height / 2 - 10, 20, 20, Text.of("<"), b -> {
                 currentOrigin = (currentOrigin - 1 + maxSelection) % maxSelection;
                 Origin newOrigin = getCurrentOriginInternal();
                 showOrigin(newOrigin, layerList.get(currentLayerIndex), newOrigin == randomOrigin);
@@ -149,7 +149,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
                 // set selection button loading
                 setButtonLoading();
             }));
-            addDrawableChild(new ButtonWidget(guiLeft + windowWidth + 20, this.height / 2 - 10, 20, 20, new LiteralText(">"), b -> {
+            addDrawableChild(new ButtonWidget(guiLeft + windowWidth + 20, this.height / 2 - 10, 20, 20, Text.of(">"), b -> {
                 currentOrigin = (currentOrigin + 1) % maxSelection;
                 Origin newOrigin = getCurrentOriginInternal();
                 showOrigin(newOrigin, layerList.get(currentLayerIndex), newOrigin == randomOrigin);
@@ -163,23 +163,23 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
 
 
     private void createRandom(int randSelect, int i) {
-        if(i >= originSelection.size()) {
+        if (i >= originSelection.size()) {
             randomIndex = -2; // -2 == full
-            if(randomNotLoaded) {
+            if (randomNotLoaded) {
                 randomNotLoaded = false;
                 loadCurrOrigin();
             }
             return; // stop searching if iterates thru everything
         }
-        if(randSelect == 0) randSelect++; // 0 = human, skip
+        if (randSelect == 0) randSelect++; // 0 = human, skip
 
         // register even for packet that will be set below
         int finalRandSelect = randSelect;
         OriginCapPackets.setRandomCapReceivedListener((layerKey, originKey, isChoosable) -> {
             System.out.println("received check for " + originKey);
 
-            if(isChoosable) {
-                if(randomNotLoaded) {
+            if (isChoosable) {
+                if (randomNotLoaded) {
                     randomNotLoaded = false;
                     loadCurrOrigin();
                 }
@@ -246,7 +246,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
     private void loadCurrOrigin() {
         // if random has not found anything set full
         // already dealt with if on random screen and still loading random
-        if(getCurrOriginIncludeRandom() == null) {
+        if (getCurrOriginIncludeRandom() == null) {
             setButtonFull();
             return;
         }
@@ -273,7 +273,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
     }
 
 
-        // standard origin packet, the one from original origin code
+    // standard origin packet, the one from original origin code
     private PacketByteBuf getOriginPacketBuffer() {
 
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -285,7 +285,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
         return buf;
     }
 
-        // packet for requesting if origin is capped or not
+    // packet for requesting if origin is capped or not
     private PacketByteBuf getCapPacketBuffer() {
 
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -317,21 +317,21 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
 
     protected void originalOriginInit() {
         super.init();
-        if(maxSelection > 1) {
-            addDrawableChild(new ButtonWidget(guiLeft - 40,this.height / 2 - 10, 20, 20, new LiteralText("<"), b -> {
+        if (maxSelection > 1) {
+            addDrawableChild(new ButtonWidget(guiLeft - 40, this.height / 2 - 10, 20, 20, Text.of("<"), b -> {
                 currentOrigin = (currentOrigin - 1 + maxSelection) % maxSelection;
                 Origin newOrigin = getCurrentOriginInternal();
                 showOrigin(newOrigin, layerList.get(currentLayerIndex), newOrigin == randomOrigin);
             }));
-            addDrawableChild(new ButtonWidget(guiLeft + windowWidth + 20, this.height / 2 - 10, 20, 20, new LiteralText(">"), b -> {
+            addDrawableChild(new ButtonWidget(guiLeft + windowWidth + 20, this.height / 2 - 10, 20, 20, Text.of(">"), b -> {
                 currentOrigin = (currentOrigin + 1) % maxSelection;
                 Origin newOrigin = getCurrentOriginInternal();
                 showOrigin(newOrigin, layerList.get(currentLayerIndex), newOrigin == randomOrigin);
             }));
         }
-        addDrawableChild(new ButtonWidget(guiLeft + windowWidth / 2 - 50, guiTop + windowHeight + 5, 100, 20, new TranslatableText(Origins.MODID + ".gui.select"), b -> {
+        addDrawableChild(new ButtonWidget(guiLeft + windowWidth / 2 - 50, guiTop + windowHeight + 5, 100, 20, Text.translatable(Origins.MODID + ".gui.select"), b -> {
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-            if(currentOrigin == originSelection.size()) {
+            if (currentOrigin == originSelection.size()) {
                 buf.writeString(layerList.get(currentLayerIndex).getIdentifier().toString());
                 ClientPlayNetworking.send(ModPackets.CHOOSE_RANDOM_ORIGIN, buf);
             } else {
