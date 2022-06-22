@@ -219,12 +219,14 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
     }
 
     private void setButtonLoading() {
-        randomNotLoaded = getCurrOriginIncludeRandom() == null; // reset random loading cause screen has changed
+        if(randomIndex == -2)
+            setButtonFull();
         chooseOriginButton.setAlpha(.5f);
         chooseOriginButton.setMessage(loadingText);
         buttonStatus = ButtonStatus.LOADING;
-        if (randomNotLoaded)  // random not found yet
+        if (getCurrOriginIncludeRandom() == null) // random not found yet
             return;
+
 
         loadCurrOrigin();
     }
@@ -301,7 +303,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
 
     private Origin getCurrOriginIncludeRandom() {
         if (isOnRandomOrigin()) {
-            if (randomIndex == -1) // random not found yet or at all
+            if (randomIndex < 0) // random not found yet or at all
                 return null;
             else
                 return originSelection.get(randomIndex); // get random origin
