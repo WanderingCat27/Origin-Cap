@@ -94,8 +94,6 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
         fetchingText = Text.literal("FETCHING ORIGIN");
 
         chooseOriginButton = new ButtonWidget(guiLeft + windowWidth / 2 - 50, guiTop + windowHeight + 5, 100, 20, loadingText, b -> {
-            System.out.println(buttonStatus);
-
             if (buttonStatus == ButtonStatus.CHOOSABLE) {
                 AtomicBoolean openNextScreen = new AtomicBoolean(false);
 
@@ -163,6 +161,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
 
 
     private void createRandom(int randSelect, int i) {
+        System.out.println(i);
         if (i >= originSelection.size()) {
             randomIndex = -2; // -2 == full
             if (randomNotLoaded) {
@@ -219,8 +218,10 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
     }
 
     private void setButtonLoading() {
-        if(randomIndex == -2)
+        if (randomIndex == -2) {
             setButtonFull();
+            return;
+        }
         chooseOriginButton.setAlpha(.5f);
         chooseOriginButton.setMessage(loadingText);
         buttonStatus = ButtonStatus.LOADING;
@@ -315,7 +316,6 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
     private void openNextLayerScreen() {
 
     }
-
 
     protected void originalOriginInit() {
         super.init();
