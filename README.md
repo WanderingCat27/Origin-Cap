@@ -1,4 +1,5 @@
 # Origin-Cap
+# 1.19
 Addon to Origins mod for server to add a max to origins - only for servers **BUT STILL REQUIRES BOTH CLIENT AND SERVER TO HAVE MODS**
 
 made mainly for my server, but it should work fine for any server
