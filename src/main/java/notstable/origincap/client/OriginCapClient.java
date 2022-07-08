@@ -17,9 +17,9 @@ import notstable.origincap.OriginCapPackets;
 public class OriginCapClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-      ClientPlayConnectionEvents.INIT.register((handler, client) -> {
-           ClientPlayNetworking.registerReceiver(OriginCapPackets.CLIENT_RECEIVE_HANDSHAKE, OriginCapClient::receive);
-     });
+//      ClientPlayConnectionEvents.INIT.register((handler, client) -> {
+//           ClientPlayNetworking.registerReceiver(OriginCapPackets.CLIENT_RECEIVE_HANDSHAKE, OriginCapClient::receive);
+//     });
 
         OriginCapPackets.registerClient();
     }

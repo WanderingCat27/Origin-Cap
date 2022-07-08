@@ -1,5 +1,6 @@
 package notstable.origincap;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -9,9 +10,17 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerConfigEntry;
+import net.minecraft.server.Whitelist;
+import net.minecraft.server.WhitelistEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.UUID;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -39,6 +48,7 @@ public class OriginCap implements DedicatedServerModInitializer {
     }
 
 
+
     private void registerCommands() {
         CommandRegistrationCallback.EVENT.register(new CommandRegistrationCallback() {
             @Override
@@ -51,7 +61,11 @@ public class OriginCap implements DedicatedServerModInitializer {
                             context.getSource().sendFeedback(Text.literal("origin cap file reloaded"), true);
                             return 1;
                         }))
-
+                        .then(literal("enforce-whitelist").executes(context -> {
+                            OriginCapList.enforceWhitelist(context.getSource().getServer());
+                            context.getSource().sendFeedback(Text.literal("removed non whitelisted players from origin cap"), true);
+                            return 1;
+                        }))
                         // set cap
                         .then(literal("cap")
                                 .then(literal("get").executes(context -> {
