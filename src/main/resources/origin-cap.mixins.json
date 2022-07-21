@@ -8,8 +8,7 @@
   "server": [
   ],
   "client": [
-    "ChooseOriginScreenMixin",
-    "ChooseOriginScreenAccessor"
+    "ChooseOriginScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

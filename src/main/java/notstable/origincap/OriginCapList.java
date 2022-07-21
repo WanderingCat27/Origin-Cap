@@ -114,6 +114,8 @@ public class OriginCapList {
 
     public static void addToLog(String playerUUID, String layerKey, String originKey) {
         // checks blacklist for layer, origin, and player
+        System.out.println(layerBlacklist.blackList);
+        System.out.println(layerKey + " --");
         if (playerUUIDBlacklist.containsIgnoreCase(playerUUID) || originBlacklist.containsIgnoreCase(originKey) || layerBlacklist.containsIgnoreCase(layerKey))
             return;
 

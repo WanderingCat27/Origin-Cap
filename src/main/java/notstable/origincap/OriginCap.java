@@ -1,6 +1,5 @@
 package notstable.origincap;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -10,17 +9,10 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.ServerConfigEntry;
-import net.minecraft.server.Whitelist;
-import net.minecraft.server.WhitelistEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -46,7 +38,6 @@ public class OriginCap implements DedicatedServerModInitializer {
 
 
     }
-
 
 
     private void registerCommands() {
@@ -339,7 +330,30 @@ public class OriginCap implements DedicatedServerModInitializer {
                                                 e.printStackTrace();
                                                 return 0;
                                             }
-                                        })))));
+                                        }))))
+                        .then(literal("clearOrigin")
+                                .then(argument("playerName", StringArgumentType.string()).executes(context -> {
+                                    String playerName = StringArgumentType.getString(context, "playerName");
+                                    try {
+                                        String uuid = UUIDTools.playerNameToUUID(playerName);
+                                        if (uuid.isEmpty()) {
+                                            context.getSource().sendError(Text.literal("could not find" + playerName));
+                                            return 0;
+                                        }
+                                        ServerPlayerEntity player = context.getSource().getServer().getPlayerManager().getPlayer(uuid);
+
+                                        if (player != null) {
+                                            
+                                        }
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        return 0;
+                                    }
+                                    return 1;
+                                }))
+
+                        ));
             }
         });
     }
