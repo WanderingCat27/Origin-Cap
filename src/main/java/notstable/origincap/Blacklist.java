@@ -56,19 +56,20 @@ public class Blacklist {
         }
     }
 
-
     public boolean containsIgnoreCase(String s) {
+        return containsIgnoreCase(s, false);
+    }
+
+    public boolean containsIgnoreCase(String s, boolean isUUID) {
         if (blackList == null)
             return false;
 
-        s = s.replaceAll("-", ""); // if uuid, the stored uuid will not have - but incoming will
-        System.out.println(s);
+        if(isUUID)
+            s = s.replaceAll("-", ""); // if uuid, the stored uuid will not have - but incoming will
 
-        for (String l : blackList) {
-            System.out.println(l);
+        for (String l : blackList)
             if (s.equalsIgnoreCase(l))
                 return true;
-        }
         return false;
     }
 

@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mixin(ChooseOriginScreen.class)
@@ -82,7 +83,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
         // random origin
         // when select on random origin changes behavior to just select a random origin from the list so it is more predictable for me
         new Thread(() -> {
-            createRandom(1, 0);
+            createRandom(new Random().nextInt(originSelection.size() - 1) + 1, 0);
         }).start();
 
 
