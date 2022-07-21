@@ -54,14 +54,17 @@ public class OriginCapList {
         }
     }
 
-    public static void enforceWhitelist(MinecraftServer server) {
+    public static String enforceWhitelist(MinecraftServer server) {
+        String list = "\n";
         createCapBackup();
-        if (!server.getPlayerManager().isWhitelistEnabled())
+        if (!server.getPlayerManager().isWhitelistEnabled()) {
             System.err.println("whitelist not enabled");
+            return "disabled";
+        }
         File w = new File("whitelist.json");
         if (!w.exists()) {
             System.err.println("whitelist does not exist");
-            return;
+            return "nonexistant";
         }
         try {
             ArrayList<Map<String, String>> whitelist = new Gson().fromJson(Files.readString(w.toPath()), ArrayList.class);
@@ -69,16 +72,14 @@ public class OriginCapList {
             // get a list of all players in the cap
             for (String layerID : originCapMap.keySet()) {
                 Object l_temp = originCapMap.get(layerID);
-                if (l_temp == null || !(l_temp instanceof Map))
-                    continue;
+                if (l_temp == null || !(l_temp instanceof Map)) continue;
                 // get layer map of origins
                 Map<String, ArrayList<String>> currLayerMap = (Map<String, ArrayList<String>>) l_temp;
                 Set<String> originKeySet = currLayerMap.keySet();
                 for (String originKey : originKeySet) {
                     //check null and is list
                     Object o_temp = currLayerMap.get(originKey);
-                    if (!(o_temp instanceof List))
-                        continue;
+                    if (!(o_temp instanceof List)) continue;
                     if (o_temp == null) { // if list null, remove
                         currLayerMap.remove(originKey);
                         continue;
@@ -87,12 +88,11 @@ public class OriginCapList {
                     ArrayList<String> ul = (ArrayList<String>) o_temp;
                     // loop list
                     for (int i = 0; i < ul.size(); i++)
-                        if (!uuidList.contains(ul.get(i)))
-                            uuidList.add(ul.get(i));
+                        if (!uuidList.contains(ul.get(i))) uuidList.add(ul.get(i));
                 }
             }
             boolean found = false;
-            System.out.println(uuidList);
+
             for (String p : uuidList) {
                 for (Map<String, String> m : whitelist)
                     if (uuidsEqual(m.get("uuid"), p)) {
@@ -101,7 +101,7 @@ public class OriginCapList {
                     }
                 if (!found) {
                     removePlayerAllLayers(p);
-                    System.out.println(UUIDTools.UUIDToPlayerName(p) + " removed");
+                    list += "\n" + UUIDTools.UUIDToPlayerName(p);
                 }
                 found = false;
             }
@@ -110,6 +110,7 @@ public class OriginCapList {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return list;
     }
 
     public static void addToLog(String playerUUID, String layerKey, String originKey) {

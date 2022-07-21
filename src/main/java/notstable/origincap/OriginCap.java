@@ -53,8 +53,17 @@ public class OriginCap implements DedicatedServerModInitializer {
                             return 1;
                         }))
                         .then(literal("enforce-whitelist").executes(context -> {
-                            OriginCapList.enforceWhitelist(context.getSource().getServer());
-                            context.getSource().sendFeedback(Text.literal("removed non whitelisted players from origin cap"), true);
+                            String l = OriginCapList.enforceWhitelist(context.getSource().getServer());
+                            System.out.println(l);
+                            if(l.equals("nonexistant"))
+                                context.getSource().sendError(Text.literal("whitelisted file not found"));
+                            else if (l.equals("disabled"))
+                                context.getSource().sendError(Text.literal("whitelisted is not enabled"));
+
+                            else if (l.isBlank())
+                                context.getSource().sendFeedback(Text.literal("no players to remove"), true);
+                            else
+                                context.getSource().sendFeedback(Text.literal("removed non whitelisted players from origin cap: " + l), true);
                             return 1;
                         }))
                         // set cap
@@ -343,7 +352,7 @@ public class OriginCap implements DedicatedServerModInitializer {
                                         ServerPlayerEntity player = context.getSource().getServer().getPlayerManager().getPlayer(uuid);
 
                                         if (player != null) {
-                                            
+
                                         }
 
                                     } catch (Exception e) {
