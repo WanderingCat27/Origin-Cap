@@ -8,10 +8,8 @@ import io.github.apace100.origins.command.OriginArgumentType;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -52,8 +50,17 @@ public class OriginCap implements DedicatedServerModInitializer {
                             return 1;
                         }))
                         .then(literal("enforce-whitelist").executes(context -> {
-                            OriginCapList.enforceWhitelist(context.getSource().getServer());
-                            context.getSource().sendFeedback(new LiteralText("removed non whitelisted players from origin cap"), true);
+                            String l = OriginCapList.enforceWhitelist(context.getSource().getServer());
+                            System.out.println(l);
+                            if(l.equals("nonexistant"))
+                                context.getSource().sendError(new LiteralText("whitelisted file not found"));
+                            else if (l.equals("disabled"))
+                                context.getSource().sendError(new LiteralText("whitelisted is not enabled"));
+
+                            else if (l.isBlank())
+                                context.getSource().sendFeedback(new LiteralText("no players to remove"), true);
+                            else
+                                context.getSource().sendFeedback(new LiteralText("removed non whitelisted players from origin cap: " + l), true);
                             return 1;
                         }))
                         // set cap
