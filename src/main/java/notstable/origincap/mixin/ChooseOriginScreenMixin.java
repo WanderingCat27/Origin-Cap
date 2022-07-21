@@ -12,7 +12,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import notstable.origincap.OriginCap.ButtonStatus;
 import notstable.origincap.OriginCapPackets;
 import org.spongepowered.asm.mixin.Mixin;
@@ -89,10 +91,10 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
 
         super.init();
 
-        chooseText = Text.literal("Select");
-        fullText = Text.literal("FULL");
-        loadingText = Text.literal("LOADING");
-        fetchingText = Text.literal("FETCHING ORIGIN");
+        chooseText = new LiteralText("Select");
+        fullText = new LiteralText("FULL");
+        loadingText = new LiteralText("LOADING");
+        fetchingText = new LiteralText("FETCHING ORIGIN");
 
         chooseOriginButton = new ButtonWidget(guiLeft + windowWidth / 2 - 50, guiTop + windowHeight + 5, 100, 20, loadingText, b -> {
             if (buttonStatus == ButtonStatus.CHOOSABLE) {
@@ -332,7 +334,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
                 showOrigin(newOrigin, layerList.get(currentLayerIndex), newOrigin == randomOrigin);
             }));
         }
-        addDrawableChild(new ButtonWidget(guiLeft + windowWidth / 2 - 50, guiTop + windowHeight + 5, 100, 20, Text.translatable(Origins.MODID + ".gui.select"), b -> {
+        addDrawableChild(new ButtonWidget(guiLeft + windowWidth / 2 - 50, guiTop + windowHeight + 5, 100, 20, new TranslatableText(Origins.MODID + ".gui.select"), b -> {
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             if (currentOrigin == originSelection.size()) {
                 buf.writeString(layerList.get(currentLayerIndex).getIdentifier().toString());

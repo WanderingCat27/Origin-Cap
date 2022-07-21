@@ -56,8 +56,7 @@ public class OriginCapList {
 
     public static void enforceWhitelist(MinecraftServer server) {
         createCapBackup();
-        if (!server.getPlayerManager().isWhitelistEnabled())
-            System.err.println("whitelist not enabled");
+        if (!server.getPlayerManager().isWhitelistEnabled()) System.err.println("whitelist not enabled");
         File w = new File("whitelist.json");
         if (!w.exists()) {
             System.err.println("whitelist does not exist");
@@ -69,16 +68,14 @@ public class OriginCapList {
             // get a list of all players in the cap
             for (String layerID : originCapMap.keySet()) {
                 Object l_temp = originCapMap.get(layerID);
-                if (l_temp == null || !(l_temp instanceof Map))
-                    continue;
+                if (l_temp == null || !(l_temp instanceof Map)) continue;
                 // get layer map of origins
                 Map<String, ArrayList<String>> currLayerMap = (Map<String, ArrayList<String>>) l_temp;
                 Set<String> originKeySet = currLayerMap.keySet();
                 for (String originKey : originKeySet) {
                     //check null and is list
                     Object o_temp = currLayerMap.get(originKey);
-                    if (!(o_temp instanceof List))
-                        continue;
+                    if (!(o_temp instanceof List)) continue;
                     if (o_temp == null) { // if list null, remove
                         currLayerMap.remove(originKey);
                         continue;
@@ -87,8 +84,7 @@ public class OriginCapList {
                     ArrayList<String> ul = (ArrayList<String>) o_temp;
                     // loop list
                     for (int i = 0; i < ul.size(); i++)
-                        if (!uuidList.contains(ul.get(i)))
-                            uuidList.add(ul.get(i));
+                        if (!uuidList.contains(ul.get(i))) uuidList.add(ul.get(i));
                 }
             }
             boolean found = false;
@@ -117,8 +113,7 @@ public class OriginCapList {
         if (playerUUIDBlacklist.containsIgnoreCase(playerUUID, true) || originBlacklist.containsIgnoreCase(originKey) || layerBlacklist.containsIgnoreCase(layerKey))
             return;
 
-        if (originCapMap == null)
-            reloadCap();
+        if (originCapMap == null) reloadCap();
 
         // check add layer
         Map<String, ArrayList<String>> layerMap;
@@ -139,16 +134,14 @@ public class OriginCapList {
         }
 
         // check add player
-        if (!originUUIDList.contains(playerUUID))
-            originUUIDList.add(playerUUID);
+        if (!originUUIDList.contains(playerUUID)) originUUIDList.add(playerUUID);
 
         writeMapToFile();
     }
 
     public static void removePlayerFromLayer(String playerUUID, String layerID) {
         Object l_temp = originCapMap.get(layerID);
-        if (l_temp == null || !(l_temp instanceof Map))
-            return;
+        if (l_temp == null || !(l_temp instanceof Map)) return;
 
         // get layer map of origins
         Map<String, ArrayList<String>> currLayerMap = (Map<String, ArrayList<String>>) l_temp;
@@ -156,8 +149,7 @@ public class OriginCapList {
         for (String originKey : originKeySet) {
             //check null and is list
             Object o_temp = currLayerMap.get(originKey);
-            if (!(o_temp instanceof List))
-                continue;
+            if (!(o_temp instanceof List)) continue;
             if (o_temp == null) { // if list null, remove
                 currLayerMap.remove(originKey);
                 continue;
@@ -167,21 +159,18 @@ public class OriginCapList {
             ArrayList<String> uuidList = (ArrayList<String>) o_temp;
             // loop list
             for (int i = 0; i < uuidList.size(); i++) {
-                if (uuidsEqual(uuidList.get(i), playerUUID))
-                    uuidList.remove(i); // remove matching uuids
+                if (uuidsEqual(uuidList.get(i), playerUUID)) uuidList.remove(i); // remove matching uuids
             }
 
             // if list is now empty, remove it
-            if (uuidList.isEmpty())
-                currLayerMap.remove(originKey);
+            if (uuidList.isEmpty()) currLayerMap.remove(originKey);
         }
         writeMapToFile();
 
     }
 
     public static void removePlayerAllLayers(String playerUUID) {
-        if (originCapMap == null)
-            reloadCap();
+        if (originCapMap == null) reloadCap();
         Set<String> layerKeySet = originCapMap.keySet();
 
         for (String layerKey : layerKeySet) {
@@ -189,8 +178,7 @@ public class OriginCapList {
             if (layerKey.equalsIgnoreCase(capKey)) // skip cap identifier
                 continue;
             Object l_temp = originCapMap.get(layerKey);
-            if (l_temp == null || !(l_temp instanceof Map))
-                continue;
+            if (l_temp == null || !(l_temp instanceof Map)) continue;
 
             // get layer map of origins
             Map<String, ArrayList<String>> currLayerMap = (Map<String, ArrayList<String>>) originCapMap.get(layerKey);
@@ -198,8 +186,7 @@ public class OriginCapList {
             for (String originKey : originKeySet) {
                 //check null and is list
                 Object o_temp = currLayerMap.get(originKey);
-                if (!(o_temp instanceof List))
-                    continue;
+                if (!(o_temp instanceof List)) continue;
                 if (o_temp == null) { // if list null, remove
                     currLayerMap.remove(originKey);
                     continue;
@@ -209,13 +196,11 @@ public class OriginCapList {
                 ArrayList<String> uuidList = (ArrayList<String>) o_temp;
                 // loop list
                 for (int i = 0; i < uuidList.size(); i++) {
-                    if (uuidsEqual(uuidList.get(i), playerUUID))
-                        uuidList.remove(i); // remove matching uuids
+                    if (uuidsEqual(uuidList.get(i), playerUUID)) uuidList.remove(i); // remove matching uuids
                 }
 
                 // if list is now empty, remove it
-                if (uuidList.isEmpty())
-                    currLayerMap.remove(originKey);
+                if (uuidList.isEmpty()) currLayerMap.remove(originKey);
             }
 
         }
@@ -231,8 +216,7 @@ public class OriginCapList {
 
     public static double getNumberOfOrigin(String layerKey, String originKey) {
         ArrayList<String> l = getPlayersOfOrigin(layerKey, originKey);
-        if (l == null)
-            return 0;
+        if (l == null) return 0;
         return l.size();
     }
 
@@ -250,8 +234,7 @@ public class OriginCapList {
 
     private static void writeMapToFile() {
         try {
-            if (!originsCapsLog.exists())
-                originsCapsLog.createNewFile();
+            if (!originsCapsLog.exists()) originsCapsLog.createNewFile();
             FileWriter flwr = new FileWriter(originsCapsLog);
             flwr.write(new Gson().toJson(originCapMap));
             flwr.close();
@@ -288,17 +271,14 @@ public class OriginCapList {
 
     public static void reloadCap() {
         // create file if none exists
-        if (!originsCapsLog.exists())
-            try {
-                originsCapsLog.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (!originsCapsLog.exists()) try {
+            originsCapsLog.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
             // load map
-        else
-            originCapMap = getMapFromFile();
-        if (originCapMap == null)
-            originCapMap = new HashMap<String, Object>();
+        else originCapMap = getMapFromFile();
+        if (originCapMap == null) originCapMap = new HashMap<String, Object>();
         // load cap
         originCap = (int) getOriginCapFromFile();
     }
@@ -312,16 +292,14 @@ public class OriginCapList {
     }
 
     public static void clearCapLayer(String originLayerKey) {
-        if (!originCapMap.containsKey(originLayerKey))
-            return;
+        if (!originCapMap.containsKey(originLayerKey)) return;
 
         originCapMap.remove(originLayerKey);
         writeMapToFile();
     }
 
     public static void clearCapOrigin(String originKey) {
-        if (originCapMap == null)
-            reloadCap();
+        if (originCapMap == null) reloadCap();
         Set<String> layerKeySet = originCapMap.keySet();
 
         for (String layerKey : layerKeySet) {
@@ -329,8 +307,7 @@ public class OriginCapList {
             if (layerKey.equalsIgnoreCase(capKey)) // skip cap identifier
                 continue;
             Object l_temp = originCapMap.get(layerKey);
-            if (l_temp == null || !(l_temp instanceof Map))
-                continue;
+            if (l_temp == null || !(l_temp instanceof Map)) continue;
 
             ((Map<String, Object>) originCapMap.get(layerKey)).remove(originKey);
         }
@@ -342,10 +319,8 @@ public class OriginCapList {
     }
 
     public static void setCap(int cap) {
-        if (originCapMap.containsValue(capKey))
-            originCapMap.replace(capKey, cap);
-        else
-            originCapMap.put(capKey, cap);
+        if (originCapMap.containsValue(capKey)) originCapMap.replace(capKey, cap);
+        else originCapMap.put(capKey, cap);
         originCap = cap;
         writeMapToFile();
     }

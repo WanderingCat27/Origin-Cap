@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerLoginNetworkHandler;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -112,10 +113,10 @@ public class OriginCapPackets {
 
 
             if (mismatch)
-                serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
+                serverLoginNetworkHandler.disconnect(new LiteralText("This server requires you have the mod origin cap  installed"));
 
         } else {
-            serverLoginNetworkHandler.disconnect(Text.literal("This server requires you have the mod origin cap  installed"));
+            serverLoginNetworkHandler.disconnect(new LiteralText("This server requires you have the mod origin cap  installed"));
         }
     }
 
