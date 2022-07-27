@@ -6,6 +6,7 @@ made mainly for my server, but it should work fine for any server
 
 /origincap
   -> reload - reloads files in config, so if u edit the cap files manually (only do if u understand what ur doing) u can do /reload
+  
   -> cap
     -> set - sets the global cap for origins (i.e. only 3 merlins)
     -> get - gets current cap
