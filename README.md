@@ -6,7 +6,7 @@ made mainly for my server, but it should work fine for any server
 
 #Commands
 
-/origincap
+/origincap (i dont understand y github keeps messing with my indents and line breaks but ill have to figure out how to make this prettier and readable later)
 |       -> reload - reloads files in config, so if u edit the cap files manually (only do if u understand what ur doing) u can do /reload
 
 |       -> cap
