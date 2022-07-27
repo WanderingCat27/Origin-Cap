@@ -13,17 +13,17 @@ made mainly for my server, but it should work fine for any server
   
 	-> get - gets current cap
   
-	-> blacklist - set of blacklist commands to make cap ignore particular player, origins, and layers (layers i.e. origins classes)
+-> blacklist - set of blacklist commands to make cap ignore particular player, origins, and layers (layers i.e. origins classes)
   
 	-> origin - makes a specfic origin class etc ignored by the cap
   
 	-> player - makes a player get ignored by the cap
   
-	-> layer - makes a layer i.e origins-classes get ignored by the cap (I use this to make origins have a cap but originsn-classes have no cap)
+        -> layer - makes a layer i.e origins-classes get ignored by the cap (I use this to make origins have a cap but originsn-classes have no cap)
   
-	-> endforce-wwhitelist -> removes any players not in the whitelist from the cap (does nothing if whitelist disabled). 
+-> endforce-wwhitelist -> removes any players not in the whitelist from the cap (does nothing if whitelist disabled). 
   
-	-> remove(will be changed to clear) - wipes a player/origin/layer from the list
+-> remove(will be changed to clear) - wipes a player/origin/layer from the list
   
 	-> origin
   
@@ -31,4 +31,4 @@ made mainly for my server, but it should work fine for any server
   
 	-> layer
   
-	-> ckearOrigin - *does nothing currently* in the future planning to add a way to reset players to the origins gui if they r offline 
+-> ckearOrigin - *does nothing currently* in the future planning to add a way to reset players to the origins gui if they r offline 
