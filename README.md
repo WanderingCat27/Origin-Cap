@@ -5,13 +5,17 @@ Addon to Origins mod for server to add a max to origins - only for servers **BUT
 made mainly for my server, but it should work fine for any server
 
 /origincap
-  -> reload - reloads files in config
+  -> reload - reloads files in config, so if u edit the cap files manually (only do if u understand what ur doing) u can do /reload
   -> cap
     -> set - sets the global cap for origins (i.e. only 3 merlins)
     -> get - gets current cap
   -> blacklist - set of blacklist commands to make cap ignore particular player, origins, and layers (layers i.e. origins classes)
-    -> TO ADD (commands r pretty self explanatory tho, but missing commands and dont have client up rn)
-    
-download https://github.com/WanderingCat27/Origin-Cap/releases/tag/v1.2
-# 1.18
-this mod was made in 1.18 originally then I did not end up using it until 1.19 so current version is 1.19, if someone wants me to port it to 1.19 just ask in issues and Ill do it, I just wont go out of my way rn cause idk if anyone even wants it. There is a 1.18 branch, but there were still bugs in it that went unnoticed until 1.19. A port would be easy tho so I could make it if anyone actually requests it.
+    -> origin - makes a specfic origin class etc ignored by the cap
+    -> player - makes a player get ignored by the cap
+    -> layer - makes a layer i.e origins-classes get ignored by the cap (I use this to make origins have a cap but originsn-classes have no cap)
+  -> endforce-wwhitelist -> removes any players not in the whitelist from the cap (does nothing if whitelist disabled). 
+  -> remove(will be changed to clear) - wipes a player/origin/layer from the list
+    -> origin
+    -> player
+    -> layer
+  -> ckearOrigin - *does nothing currently* in the future planning to add a way to reset players to the origins gui if they r offline 
