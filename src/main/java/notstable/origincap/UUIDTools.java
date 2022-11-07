@@ -50,7 +50,7 @@ public class UUIDTools {
 
     // GET
     public static String UUIDToPlayerName(String uuid) throws IOException {
-        URL url = new URL("https://api.mojang.com/user/profiles/" + uuid);
+        URL url = new URL("https://api.mojang.com/user/profile/" + uuid);
 
         StringBuilder result = new StringBuilder();
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
