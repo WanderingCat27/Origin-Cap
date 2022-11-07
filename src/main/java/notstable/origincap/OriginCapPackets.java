@@ -160,7 +160,7 @@ public class OriginCapPackets {
 
     // remove player from cap
     private static void serverRemovePlayerFromCap(MinecraftServer server, ServerPlayerEntity serverPlayerEntity, ServerPlayNetworkHandler serverPlayNetworkHandler, PacketByteBuf packetByteBuf, PacketSender packetSender) {
-        OriginCapList.removePlayerFromLayer(serverPlayerEntity.getUuid().toString(), packetByteBuf.readString());
+        OriginCapStruct.removePlayerFromLayer(serverPlayerEntity.getUuid().toString(), packetByteBuf.readString());
     }
 
     // cap check server
@@ -174,7 +174,7 @@ public class OriginCapPackets {
         String originID = packetByteBuf.readString(32767);
         String layerID = packetByteBuf.readString(32767);
 
-        boolean choosable = !OriginCapList.doesOriginExceedCap(layerID, originID);
+        boolean choosable = !OriginCapStruct.doesOriginExceedCap(layerID, originID);
 
         // send back to client
         // request type
@@ -214,9 +214,9 @@ public class OriginCapPackets {
         String newOriginID = packetByteBuf.readString(32767);
         String layerID = packetByteBuf.readString(32767);
         // clear player from cap
-        OriginCapList.removePlayerFromLayer(playerEntity.getUuid().toString(), layerID);
+        OriginCapStruct.removePlayerFromLayer(playerEntity.getUuid().toString(), layerID);
         // add origin and player to layer cap
-        OriginCapList.addToLog(playerEntity.getUuid().toString(), layerID, newOriginID);
+        OriginCapStruct.addToLog(playerEntity.getUuid().toString(), layerID, newOriginID);
     }
 
     public static void setRandomCapReceivedListener(CapListener toAdd) {
