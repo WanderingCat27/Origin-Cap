@@ -17,7 +17,6 @@ I suggest just reading here
 	  - ignore (A blacklist of sorts  allows anyone to choose from the origin or layer specified) 
 		  - layer (blacklist a layer from being capped) 
 		  - origin (blacklist an origin from being capped) 
- 
 	  - overrideMax (Allows for you to specify the maximum number of players can choose globally  per layer  or per origin) 
 		  - set (set the override for each of the following) 
 			  - globalDef (max for all non overrided layers and origins) 
@@ -27,7 +26,6 @@ I suggest just reading here
 			  - layer (returns the layer to follow the global def) 
 			  - origin (returns the origin to follow its layer if the layer overrides or the global max) 
 		  - printOverrides (prints your changes and overrides) 
- 
 	  - print (prints the state of the cap  uses uuids of players) 
 	  - removePlayer (Clear a player from the cap) 
 		  - offline (if the player is offline  the mod attempts to fetch the uuid of the player from mojang servers  so type their username in as an argument) 
