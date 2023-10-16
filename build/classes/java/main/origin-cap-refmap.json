@@ -1,0 +1,22 @@
+{
+  "mappings": {
+    "org/notdev/origincap/mixin/ChooseOriginScreenMixin": {
+      "Lio/github/apace100/origins/screen/ChooseOriginScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;": "Lio/github/apace100/origins/screen/ChooseOriginScreen;method_37063(Lnet/minecraft/class_364;)Lnet/minecraft/class_364;",
+      "init": "Lio/github/apace100/origins/screen/ChooseOriginScreen;method_25426()V"
+    },
+    "org/notdev/origincap/mixin/ModPacketsC2SMixin": {
+      "chooseOrigin": "Lio/github/apace100/origins/networking/ModPacketsC2S;chooseOrigin(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/class_3222;Lnet/minecraft/class_3244;Lnet/minecraft/class_2540;Lnet/fabricmc/fabric/api/networking/v1/PacketSender;)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "org/notdev/origincap/mixin/ChooseOriginScreenMixin": {
+        "Lio/github/apace100/origins/screen/ChooseOriginScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;": "Lio/github/apace100/origins/screen/ChooseOriginScreen;method_37063(Lnet/minecraft/class_364;)Lnet/minecraft/class_364;",
+        "init": "Lio/github/apace100/origins/screen/ChooseOriginScreen;method_25426()V"
+      },
+      "org/notdev/origincap/mixin/ModPacketsC2SMixin": {
+        "chooseOrigin": "Lio/github/apace100/origins/networking/ModPacketsC2S;chooseOrigin(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/class_3222;Lnet/minecraft/class_3244;Lnet/minecraft/class_2540;Lnet/fabricmc/fabric/api/networking/v1/PacketSender;)V"
+      }
+    }
+  }
+}

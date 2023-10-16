@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "origin-cap",
+  "version": "2.0",
+  "name": "origin-cap",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/chr/origin-cap"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/origin-cap/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.notdev.origincap.client.InitializeOriginCapClient"
+    ],
+    "server": [
+      "org.notdev.origincap.server.InitializeOriginCapServer"
+    ]
+  },
+  "mixins": [
+    "origin-cap.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.3",
+    "fabric": ">=0.83.0",
+    "minecraft": ">=1.20"
+  }
+}
