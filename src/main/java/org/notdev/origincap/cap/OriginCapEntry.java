@@ -55,6 +55,10 @@ public class OriginCapEntry extends ArrayList<UUID> {
         setMaxSize(max);
     }
 
+    public void setShouldOverrideMax(boolean should) {
+        this.shouldOverrideMax = should;
+    }
+
 
     @Override
     public String toString() {

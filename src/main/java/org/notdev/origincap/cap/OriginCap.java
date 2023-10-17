@@ -76,10 +76,11 @@ public class OriginCap extends EaseHashMap<String, OriginCapLayer> {
         updateOriginMaxes();
     }
 
-    private void updateOriginMaxes() {
-        forEach((key, origin) -> {
-            if (!origin.shouldOverrideMax())
-                origin.setDefaultLayerCap(defaultCapMaxSize);
+    public void updateOriginMaxes() {
+        forEach((key, layer) -> {
+            if (!layer.shouldOverrideMax())
+                layer.setDefaultLayerCap(defaultCapMaxSize);
+            layer.updateOriginMaxes();
         });
     }
 
