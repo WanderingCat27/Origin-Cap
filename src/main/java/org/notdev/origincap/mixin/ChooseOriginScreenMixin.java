@@ -3,6 +3,7 @@ package org.notdev.origincap.mixin;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.MinecraftClient;
 import org.notdev.origincap.global.CapHandler;
 import org.notdev.origincap.server.C2S_IsOriginFullCheck;
 import org.spongepowered.asm.mixin.Mixin;
@@ -61,7 +62,7 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
   protected Element init(ChooseOriginScreen instance, Element element) {
     selectButton = ButtonWidget.builder(Text.translatable(Origins.MODID + ".gui.select"), b -> {
       // if state is not active (2) then button shouldn't be clicked
-      if (buttonState != 2)
+      if (!MinecraftClient.getInstance().isInSingleplayer() && buttonState != 2)
         return;
 
       Identifier originId = super.getCurrentOrigin().getIdentifier();
@@ -110,6 +111,10 @@ public abstract class ChooseOriginScreenMixin extends OriginDisplayScreen {
   }
 
   private void updateButtonState() {
+    if(MinecraftClient.getInstance().isInSingleplayer()) {
+      selectButton.setMessage(Text.translatable(Origins.MODID + ".gui.select"));
+      return;
+    }
     switch (this.buttonState) {
       case 0:
         selectButton.setMessage(Text.of("FULL"));
