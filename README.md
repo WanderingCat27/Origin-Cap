@@ -1,4 +1,9 @@
 # Origin-Cap
+
+No longer maintained,
+look into this possibly i think developed by the person who develops the origin mod itself
+https://github.com/eggohito/origins-limiter
+
 ### Addon to Origins mod, unaffiliated
 <br>
 <p>Adds to ability to cap origins so only x number of players can pick any specific origin</p>
